@@ -1,0 +1,196 @@
+
+#include<iostream>
+#include<string>
+#include<cmath>
+using namespace std;
+//creating the class
+class Quadratic {
+//the variables under the access specifier private
+private:
+	double x;
+	double y;
+	double z;
+
+
+	
+	
+
+//inside my constructor I have three double type elements
+public:
+	Quadratic(double a, double b, double c) {
+		x = a;
+		y = b;
+		z = c;
+	}
+
+//connecting my private elements with public variables
+	
+	
+	Quadratic Add(Quadratic& other) {
+		return Quadratic(x + other.x, y + other.y, z + other.z);
+	}
+//this is the opperation that is adding up the x with x and y with y ect..
+
+	Quadratic operator+(Quadratic& other) {
+		
+		return Add(other);
+	}
+
+//over here what i did was overide to be able to add my to quadratics
+
+
+
+	void Print() {
+		char sign;
+		char sign_two;
+		sign = (y >= 0) ? '+' : '-';
+		sign_two = (z >= 0) ? '+' : '-';
+		cout << x << "x^2" << sign << abs(y) << "x" << sign_two << abs(z) << endl;
+
+	}
+
+//I use sign is checking to see if the number is a negative and if it is it will add '-' otherwise it would show a '+'
+//the abs is to print the number without its sign because I have the sign and sign_two for that
+//I creat a void function that prints out my quadratic in its correct form 
+
+
+	
+	double roots();
+	double vertex();
+	double derivative();
+	double integral(double top, double bottom);
+
+//creating all my functions that will be called in the int main none take input besides the intergral
+	
+	
+};
+
+
+
+
+double Quadratic::roots() {
+	double root1, root2, dis, comp, real;
+
+	dis = y * y - 4 * x * z;
+	if (dis > 0) {
+		root1 = (-y + sqrt(dis)) / (2 * x);
+		root2 = (-y - sqrt(dis)) / (2 * x);
+		cout << root1 << "+0i, " << root2 << "+0i"<<endl;
+		
+	}
+	else if (dis == 0) {
+
+		root1 = (-y + sqrt(dis)) / (2 * x);
+		cout << root1 << "," << root1 << "roots are same" << endl;
+	}
+	else {
+		real = -y / (2 * x);
+		comp = sqrt(-dis) / (2 * x);
+		cout << real << "+" << comp << "i" << ",";
+		cout << real << comp << "i" << endl;
+	}
+	return 0;
+}
+
+//my roots function has three differnt cases complex, same,0
+//I use sqrt from cmath to easily get square roots
+
+double Quadratic::vertex() {
+	double P1, P2;
+	P1 = (-y / (2 * x));
+	P2 = (((4 * x * z) - (y * y)) / (4 * x));
+	cout << P1 << ", " << P2 << endl;
+	return 0;
+}
+
+//for vertex I do operations inorder to get my points on a graph and set my x and y to P1, P2
+double Quadratic::derivative() {
+	double der;
+	char ysign;
+	ysign = (y >= 0) ? '+' : '-';
+
+	der = (x * 2);
+	cout << der << "x" << ysign << abs(y) << endl;
+
+	return 0;
+}
+
+//Derivative was a simple operation because the x^2 and x will always be the form so base all the math on just those two operations
+
+double Quadratic::integral(double bottom, double top) {
+	double Top_int;
+	double bottom_int;
+	if (x == 1) {
+		 Top_int = pow(top, 3)/3 + (y * pow(top, 2) / 2) + (z * top);
+		 bottom_int = pow(bottom, 3)/3 + (y * pow(bottom, 2) / 2) + (z * bottom);
+	}
+	else {
+		 Top_int = pow(top, 3) + (y * pow(top, 2) / 2) + (z * top);
+		 bottom_int = pow(bottom, 3) + (y * pow(bottom, 2) / 2) + (z * bottom);
+	}
+	double answer = Top_int - bottom_int;
+	
+	cout << answer << endl;
+	return answer;
+}
+
+//my integral function I simply break dowm what the anti derivative would be and plug in the necessary numbers
+
+void larger_area(Quadratic P, Quadratic Q, double a, double b) {
+
+	double E_Q1, E_Q2;
+	E_Q1 = P.integral(a, b);
+		E_Q2 = Q.integral(a, b); 
+
+	
+	if (E_Q1 > E_Q2) {
+		cout << "P is larger"; 
+	}
+	else {
+		cout << "Q is larger";
+	}
+
+}
+// in this function I am seeing which area is larger I use a if statement to compre the two areas
+//th function takes four inputs P Q wich are teh numbers for the equasion and the a, b the bounds on integral
+
+
+
+int main() {
+
+	Quadratic P (3, -7, 5);
+	Quadratic Q (-3, 8, -3);
+	
+	P.roots();
+	Q.roots();
+
+	cout << "-------------------"<<endl;
+
+	P.vertex();
+	Q.vertex();
+	
+	cout << "-------------------" << endl;
+	P.derivative();
+	Q.derivative();
+
+	cout << "-------------------" << endl;
+	P.integral(1, 4);
+	Q.integral(1, 4);
+	cout << "-------------------" << endl;
+
+
+	Quadratic R= P + Q;
+	R.Print();
+
+	cout << "-------------------" << endl;
+	 larger_area(P, Q, 1, 4);
+
+
+
+
+//all functions produce correct answers and are separated by a line in order.
+
+	return 0;
+}
+
+
